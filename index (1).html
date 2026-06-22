@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contigo — Someone to actually talk to.</title>
+<meta name="description" content="Contigo connects you with real, verified human listeners. Not AI, not therapy — just a genuine conversation with someone who's fully present. Built for people who carry a lot and rarely get to just talk.">
+<meta name="keywords" content="someone to talk to india, loneliness corporate india, human listener, emotional support professionals india, talk to a real person">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --abyss:        #0A1F3D;
+    --abyss-deep:   #061425;
+    --foam:         #F6F7F3;
+    --paper:        #FFFFFF;
+    --tide:         #1F6F78;
+    --coral:        #FF7A59;
+    --coral-soft:   #FFD9CC;
+    --mist:         #8C97A6;
+    --ink:          #121722;
+    --line:         rgba(255,255,255,0.12);
+    --line-dark:    rgba(10,31,61,0.10);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+    --max-w: 1140px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:var(--font-body); color:var(--ink); background:var(--paper); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  button{ font-family:inherit; cursor:pointer; }
+  .wrap{ max-width:var(--max-w); margin:0 auto; padding:0 24px; }
+  .eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--coral); display:flex; align-items:center; gap:8px; }
+  .eyebrow::before{ content:""; width:18px; height:1px; background:var(--coral); display:inline-block; }
+  h1,h2,h3{ font-family:var(--font-display); font-weight:500; line-height:1.08; }
+  .lede{ color:var(--mist); font-size:1.05rem; max-width:54ch; line-height:1.7; }
+  :focus-visible{ outline:2px solid var(--coral); outline-offset:3px; border-radius:4px; }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 28px; border-radius:999px; font-weight:600; font-size:0.93rem; border:1px solid transparent; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; white-space:nowrap; letter-spacing:0.01em; }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-coral{ background:var(--coral); color:var(--abyss-deep); }
+  .btn-coral:hover{ box-shadow:0 12px 28px -8px rgba(255,122,89,0.5); }
+  .btn-outline{ background:transparent; color:var(--paper); border-color:var(--line); }
+  .btn-outline:hover{ background:rgba(255,255,255,0.06); }
+  .btn-outline-dark{ background:transparent; color:var(--abyss); border-color:var(--line-dark); }
+  .btn-outline-dark:hover{ background:rgba(10,31,61,0.04); }
+
+  /* safety banner */
+  #safetyBanner{ background:var(--abyss-deep); color:var(--foam); font-size:0.83rem; padding:10px 24px; display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; text-align:center; position:relative; z-index:60; }
+  #safetyBanner strong{ color:var(--coral); }
+  #safetyBanner button{ background:none; border:1px solid var(--line); color:var(--mist); border-radius:999px; padding:4px 14px; font-size:0.76rem; cursor:pointer; transition:color .15s; }
+  #safetyBanner button:hover{ color:var(--paper); }
+
+  /* nav */
+  header.nav{ background:var(--abyss-deep); position:sticky; top:0; z-index:50; border-bottom:1px solid var(--line); }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:var(--max-w); margin:0 auto; }
+  .logo{ display:flex; align-items:center; gap:9px; font-family:var(--font-display); font-style:italic; font-weight:500; font-size:1.4rem; color:var(--paper); letter-spacing:-0.01em; }
+  .nav-links{ display:flex; align-items:center; gap:32px; }
+  .nav-links a{ color:var(--mist); font-size:0.88rem; font-weight:500; letter-spacing:0.01em; transition:color .15s; }
+  .nav-links a:hover{ color:var(--paper); }
+  .nav-cta{ display:flex; align-items:center; gap:12px; }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--paper); }
+
+  @media(max-width:900px){
+    .nav-links{ position:absolute; top:100%; left:0; right:0; background:var(--abyss-deep); flex-direction:column; align-items:flex-start; gap:0; border-bottom:1px solid var(--line); max-height:0; overflow:hidden; transition:max-height .25s ease; }
+    .nav-links.open{ max-height:380px; }
+    .nav-links a{ padding:14px 24px; width:100%; border-top:1px solid var(--line); }
+    .nav-toggle{ display:block; }
+    .nav-cta .btn-outline{ display:none; }
+  }
+
+  /* hero */
+  .hero{ background:radial-gradient(130% 100% at 75% 0%, #0e2647 0%, var(--abyss) 42%, var(--abyss-deep) 100%); color:var(--paper); padding:96px 0 0; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:52px; align-items:center; padding-bottom:44px; }
+  .hero h1{ font-size:clamp(2.3rem,4.4vw,3.6rem); margin:20px 0 22px; letter-spacing:-0.02em; }
+  .hero h1 em{ font-style:italic; color:var(--coral); }
+  .hero .lede{ color:rgba(246,247,243,0.7); font-size:1.1rem; margin-bottom:36px; line-height:1.72; }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:40px; }
+
+  .trust-strip{ display:flex; flex-wrap:wrap; gap:10px 24px; font-size:0.8rem; color:rgba(246,247,243,0.5); border-top:1px solid var(--line); padding-top:24px; }
+  .trust-strip span{ display:flex; align-items:center; gap:7px; }
+
+  .hero-visual{ background:rgba(255,255,255,0.035); border:1px solid var(--line); border-radius:24px; padding:30px; backdrop-filter:blur(8px); }
+  .hv-call{ display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+  .avatar-ring{ width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg,#284a73,#16314f); border:2.5px solid var(--coral); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-style:italic; font-size:1.2rem; color:var(--coral-soft); flex-shrink:0; }
+  .hv-name{ font-weight:700; font-size:1rem; letter-spacing:-0.01em; }
+  .hv-badge{ display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; color:var(--coral-soft); margin-top:3px; letter-spacing:0.02em; }
+
+  .waveform{ display:flex; align-items:flex-end; gap:4px; height:66px; margin:20px 0 24px; }
+  .waveform i{ flex:1; background:linear-gradient(180deg,var(--coral) 0%,var(--tide) 100%); border-radius:3px; opacity:0.8; animation:wf 1.7s ease-in-out infinite; }
+  @keyframes wf{ 0%,100%{ transform:scaleY(0.3); } 50%{ transform:scaleY(1); } }
+  @media(prefers-reduced-motion:reduce){ .waveform i{ animation:none; transform:scaleY(0.65); } }
+  .hv-line{ display:flex; justify-content:space-between; font-size:0.76rem; color:rgba(246,247,243,0.45); border-top:1px solid var(--line); padding-top:14px; }
+  .hv-line strong{ color:var(--paper); font-family:var(--font-mono); font-weight:500; }
+  @media(max-width:880px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  /* divider */
+  .divider{ display:flex; justify-content:center; gap:4px; align-items:flex-end; padding:36px 0; }
+  .divider i{ width:3px; background:var(--mist); opacity:0.25; border-radius:2px; }
+  .divider i:nth-child(odd){ height:10px; }
+  .divider i:nth-child(even){ height:22px; }
+  .divider i:nth-child(3n){ background:var(--coral); opacity:0.45; }
+
+  /* generic section */
+  section{ padding:92px 0; }
+  .section-head{ max-width:620px; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(1.75rem,3vw,2.4rem); margin-top:16px; letter-spacing:-0.01em; }
+  .section-light{ background:var(--foam); }
+
+  /* real talk */
+  .realtalk{ background:var(--abyss); color:var(--paper); padding:76px 0; }
+  .realtalk-inner{ display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .rt-card{ padding:38px 30px; border-right:1px solid var(--line); }
+  .rt-card:last-child{ border-right:none; }
+  .rt-quote{ font-family:var(--font-display); font-style:italic; font-size:1.1rem; line-height:1.6; color:rgba(246,247,243,0.82); margin-bottom:20px; }
+  .rt-quote::before{ content:"\201C"; color:var(--coral); font-size:1.8rem; line-height:0; vertical-align:-0.32em; margin-right:4px; }
+  .rt-who{ font-size:0.78rem; color:var(--mist); letter-spacing:0.02em; }
+  .rt-who strong{ color:var(--coral-soft); }
+  @media(max-width:720px){ .realtalk-inner{ grid-template-columns:1fr; } .rt-card{ border-right:none; border-bottom:1px solid var(--line); } .rt-card:last-child{ border-bottom:none; } }
+
+  /* not a chatbot */
+  .diff-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .diff-card{ background:var(--paper); border:1px solid var(--line-dark); border-radius:18px; padding:28px; }
+  .diff-card.no{ opacity:0.58; }
+  .diff-tag{ font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; padding:4px 11px; border-radius:999px; display:inline-block; margin-bottom:16px; }
+  .diff-card.no .diff-tag{ background:rgba(140,151,166,0.14); color:var(--mist); }
+  .diff-card.yes .diff-tag{ background:var(--coral-soft); color:#B8421E; }
+  .diff-card p{ font-size:0.94rem; line-height:1.65; }
+  .diff-card p+p{ margin-top:10px; color:var(--mist); }
+  @media(max-width:720px){ .diff-grid{ grid-template-columns:1fr; } }
+
+  /* steps */
+  .steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .step{ border-top:2px solid var(--abyss); padding-top:20px; }
+  .step-num{ font-family:var(--font-mono); color:var(--coral); font-size:0.82rem; margin-bottom:12px; display:block; letter-spacing:0.06em; }
+  .step h3{ font-size:1.05rem; font-weight:700; font-family:var(--font-body); margin-bottom:9px; }
+  .step p{ font-size:0.88rem; color:var(--mist); line-height:1.65; }
+  @media(max-width:880px){ .steps{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:540px){ .steps{ grid-template-columns:1fr; } }
+
+  /* safety */
+  .safety{ background:var(--abyss-deep); color:var(--paper); }
+  .safety .lede{ color:var(--mist); }
+  .safety-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 32px; }
+  .safety-item{ display:flex; gap:16px; padding:22px 0; border-top:1px solid var(--line); }
+  .safety-icon{ width:40px; height:40px; border-radius:11px; background:rgba(255,122,89,0.1); border:1px solid rgba(255,122,89,0.28); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .safety-item h3{ font-family:var(--font-body); font-weight:700; font-size:0.96rem; margin-bottom:6px; }
+  .safety-item p{ font-size:0.85rem; color:var(--mist); line-height:1.65; }
+  @media(max-width:720px){ .safety-grid{ grid-template-columns:1fr; } }
+
+  /* listener section */
+  .listener-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
+  .listener-card{ background:var(--paper); border:1px solid var(--line-dark); border-radius:20px; padding:30px; }
+  .listener-card h3{ font-family:var(--font-body); font-size:0.95rem; font-weight:700; margin-bottom:18px; letter-spacing:0.01em; text-transform:uppercase; color:var(--mist); }
+  .listener-card ol{ list-style:none; counter-reset:li; display:flex; flex-direction:column; gap:16px; }
+  .listener-card ol li{ counter-increment:li; padding-left:32px; position:relative; font-size:0.9rem; line-height:1.6; }
+  .listener-card ol li::before{ content:counter(li); position:absolute; left:0; top:1px; width:21px; height:21px; border-radius:50%; background:var(--abyss); color:var(--paper); font-family:var(--font-mono); font-size:0.68rem; display:flex; align-items:center; justify-content:center; }
+  .not-allowed{ margin-top:22px; padding:16px 18px; border-radius:12px; background:rgba(255,122,89,0.07); border:1px solid rgba(255,122,89,0.22); font-size:0.83rem; color:#B8421E; line-height:1.6; }
+  @media(max-width:880px){ .listener-wrap{ grid-template-columns:1fr; } }
+
+  /* pricing */
+  .price-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .price-card{ border:1px solid var(--line-dark); border-radius:20px; padding:32px 26px; background:var(--paper); }
+  .price-card.featured{ border-color:var(--coral); box-shadow:0 18px 44px -20px rgba(255,122,89,0.38); }
+  .price-card h3{ font-family:var(--font-body); font-weight:700; font-size:0.88rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--mist); margin-bottom:8px; }
+  .price-card .amt{ font-family:var(--font-display); font-size:2.2rem; color:var(--abyss); margin:10px 0 4px; letter-spacing:-0.02em; }
+  .price-card .amt span{ font-size:0.92rem; font-family:var(--font-body); color:var(--mist); font-weight:500; }
+  .price-card ul{ margin-top:20px; display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+  .price-card ul li{ font-size:0.84rem; color:var(--mist); padding-left:16px; position:relative; line-height:1.55; }
+  .price-card ul li::before{ content:"—"; position:absolute; left:0; color:var(--coral); }
+  .price-note{ font-size:0.8rem; color:var(--mist); margin-top:20px; }
+  @media(max-width:880px){ .price-grid{ grid-template-columns:1fr; } }
+
+  /* faq */
+  .faq-item{ border-bottom:1px solid var(--line-dark); }
+  .faq-q{ width:100%; text-align:left; background:none; border:none; padding:22px 0; display:flex; justify-content:space-between; align-items:center; font-weight:600; font-size:0.96rem; color:var(--abyss); gap:16px; }
+  .faq-q .icon{ transition:transform .2s ease; color:var(--coral); font-family:var(--font-mono); flex-shrink:0; }
+  .faq-item.open .faq-q .icon{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .28s ease; font-size:0.88rem; color:var(--mist); line-height:1.7; }
+  .faq-item.open .faq-a{ max-height:240px; padding-bottom:22px; }
+
+  .crisis-note{ margin-top:38px; padding:20px 22px; border-radius:14px; background:rgba(31,111,120,0.07); border:1px solid rgba(31,111,120,0.22); font-size:0.85rem; color:#1F6F78; line-height:1.65; }
+  .crisis-note strong{ color:var(--abyss); }
+
+  /* bottom cta band */
+  .cta-band{ background:radial-gradient(100% 200% at 80% 50%, #102a4d 0%, var(--abyss-deep) 100%); color:var(--paper); padding:88px 0; text-align:center; }
+  .cta-band h2{ font-size:clamp(1.8rem,3vw,2.6rem); margin-bottom:16px; letter-spacing:-0.01em; }
+  .cta-band p{ color:rgba(246,247,243,0.6); max-width:46ch; margin:0 auto 32px; font-size:1rem; line-height:1.7; }
+  .cta-band-btns{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+  /* footer */
+  footer{ background:var(--abyss-deep); color:var(--mist); padding:58px 0 28px; font-size:0.85rem; }
+  .footer-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; margin-bottom:44px; }
+  .footer-grid h4{ color:rgba(246,247,243,0.5); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; font-family:var(--font-body); font-weight:600; }
+  .footer-grid ul{ display:flex; flex-direction:column; gap:11px; }
+  .footer-grid a{ color:var(--mist); transition:color .15s; }
+  .footer-grid a:hover{ color:var(--paper); }
+  .footer-tagline{ color:rgba(246,247,243,0.45); font-size:0.88rem; max-width:32ch; margin-top:12px; line-height:1.65; }
+  .footer-bottom{ border-top:1px solid var(--line); padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:0.76rem; color:rgba(246,247,243,0.35); }
+  @media(max-width:780px){ .footer-grid{ grid-template-columns:1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div id="safetyBanner">
+  <span><strong>Contigo is strictly platonic and 18+ only.</strong> All listeners are ID-verified. One-tap reporting on every session. No exceptions.</span>
+  <button id="bannerClose">Understood</button>
+</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 14c2-4 4-4 6 0s4 4 6 0 4-4 6 0" stroke="#FF7A59" stroke-width="2" stroke-linecap="round"/></svg>
+      contigo
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="listeners.html">Find a listener</a>
+      <a href="#how">How it works</a>
+      <a href="#safety">Safety</a>
+      <a href="apply.html">Become a listener</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="apply.html" class="btn btn-outline">Earn as a listener</a>
+      <a href="listeners.html" class="btn btn-coral">Start talking</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Real person. Genuine presence.</span>
+      <h1>You carry a lot. Sometimes you just need someone who will <em>actually listen.</em></h1>
+      <p class="lede">Contigo connects you with a real, verified human listener — not an AI, not a script, not a bot trained to sound empathetic. A person who chose to be present for this conversation.</p>
+      <div class="hero-ctas">
+        <a href="listeners.html" class="btn btn-coral">Find someone to talk to</a>
+        <a href="apply.html" class="btn btn-outline">Become a listener</a>
+      </div>
+      <div class="trust-strip">
+        <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" stroke="#FF7A59" stroke-width="1.6"/></svg>18+ only, enforced</span>
+        <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V5z" stroke="#FF7A59" stroke-width="1.6"/></svg>ID-verified listeners</span>
+        <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FF7A59" stroke-width="1.6"/><path d="M9 12l2 2 4-4" stroke="#FF7A59" stroke-width="1.6"/></svg>Strictly platonic</span>
+        <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#FF7A59" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#FF7A59" stroke-width="1.6"/></svg>Block & report, one tap</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hv-call">
+        <div class="avatar-ring">A</div>
+        <div>
+          <div class="hv-name">Aanya R.</div>
+          <div class="hv-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF7A59"/><path d="M8 12l3 3 5-6" stroke="#0A1F3D" stroke-width="2.5" stroke-linecap="round"/></svg>
+            Verified listener
+          </div>
+        </div>
+      </div>
+      <div class="waveform" aria-hidden="true">
+        <i style="animation-delay:0s"></i><i style="animation-delay:.1s"></i><i style="animation-delay:.2s"></i>
+        <i style="animation-delay:.3s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.25s"></i>
+        <i style="animation-delay:.05s"></i><i style="animation-delay:.35s"></i><i style="animation-delay:.18s"></i>
+        <i style="animation-delay:.28s"></i><i style="animation-delay:.08s"></i><i style="animation-delay:.32s"></i>
+      </div>
+      <div class="hv-line">
+        <span>Session in progress</span>
+        <strong>14:22</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true">
+  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+</div>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<div class="realtalk">
+  <div class="wrap">
+    <div class="realtalk-inner">
+      <div class="rt-card">
+        <p class="rt-quote">I tried ChatGPT. It gave me a very well-structured response. It didn't help at all. This was different.</p>
+        <p class="rt-who">— <strong>Arjun S., 29</strong> · Product Manager, Bengaluru</p>
+      </div>
+      <div class="rt-card">
+        <p class="rt-quote">There's nobody at work I can actually talk to. Therapists feel heavy. This is just… a conversation. That's all I needed.</p>
+        <p class="rt-who">— <strong>Meera K., 31</strong> · Consultant, Mumbai</p>
+      </div>
+      <div class="rt-card">
+        <p class="rt-quote">I was sceptical. Then I spoke to someone for 20 minutes and felt lighter than I had in months. I didn't expect that.</p>
+        <p class="rt-who">— <strong>Rohan V., 26</strong> · Software Engineer, Pune</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider" aria-hidden="true">
+  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+</div>
+
+<!-- ===================== NOT A CHATBOT ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">This isn't a chatbot</span>
+      <h2>Talking to an AI and talking to a person are not the same thing.</h2>
+      <p class="lede">AI tools are useful for a great many things. Genuinely understanding what you're going through is not one of them. That gap is the entire reason Contigo exists.</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card no">
+        <span class="diff-tag">An AI chatbot</span>
+        <p>Generates a statistically plausible response based on text patterns.</p>
+        <p>Available at any hour, never tires — but is never actually present, either.</p>
+        <p>Simulates understanding. Does not have it.</p>
+      </div>
+      <div class="diff-card yes">
+        <span class="diff-tag">A Contigo listener</span>
+        <p>A real person, ID-verified, who actively chose to be there for this conversation.</p>
+        <p>Real pauses. Real tone. Real follow-up questions — because they actually mean them.</p>
+        <p>Has felt things. Knows what it is to carry something quietly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true">
+  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+</div>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section id="how" class="section-light">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Four steps. One real conversation.</h2>
+      <p class="lede">No lengthy signup. No complicated process. You're here because you want to talk — so we made it as simple as possible.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Tell us what's on your mind</h3>
+        <p>Pick a topic — work stress, family, loneliness, or just needing to vent. No account required to browse.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>Choose a listener</h3>
+        <p>Browse verified listeners who are available right now and comfortable with your topic. Or let us match you.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Have the conversation</h3>
+        <p>Voice call or text. Per session — no subscription, no lock-in, no pressure to come back.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h3>You decide what's next</h3>
+        <p>Rebook the same listener, find someone new, or step away. Every choice is yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SAFETY ===================== -->
+<section class="safety" id="safety">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Safety by design</span>
+      <h2>Trust is the actual product.</h2>
+      <p class="lede">Every rule below is enforced — not aspirational. At signup, during conversations, and after they end.</p>
+    </div>
+    <div class="safety-grid">
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V5z" stroke="#FF7A59" stroke-width="1.6"/></svg></div>
+        <div><h3>ID verification before anyone listens</h3><p>Every listener submits a government ID and a photo match before going live. No exceptions, no shortcuts.</p></div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FF7A59" stroke-width="1.6"/><path d="M9 12l2 2 4-4" stroke="#FF7A59" stroke-width="1.6"/></svg></div>
+        <div><h3>Platonic conversations, without exception</h3><p>Romantic or sexual requests — from either party — are against the rules. Confirmed violations result in a permanent ban.</p></div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#FF7A59" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#FF7A59" stroke-width="1.6"/></svg></div>
+        <div><h3>Block and report in one tap</h3><p>Visible on every screen during a session. Reports are reviewed by a real person — not dismissed by an automated filter.</p></div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="2" stroke="#FF7A59" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#FF7A59" stroke-width="1.6"/></svg></div>
+        <div><h3>No recording without mutual consent</h3><p>Conversations are never stored or recorded unless both parties explicitly agree. It is never a requirement to use Contigo.</p></div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" stroke="#FF7A59" stroke-width="1.6"/></svg></div>
+        <div><h3>18+ only</h3><p>Age is verified at signup for both sides. Underage accounts are removed on detection.</p></div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#FF7A59" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><h3>Human review on every report</h3><p>A real safety team reviews reports. Listeners complete a guidelines module before their first session. Safety is not automated here.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOR LISTENERS ===================== -->
+<section class="section-light">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">For listeners</span>
+      <h2>Get paid to genuinely listen.</h2>
+      <p class="lede">If you're someone people naturally open up to, Contigo turns that into real income — on your schedule, within clear and enforced boundaries.</p>
+    </div>
+    <div class="listener-wrap">
+      <div class="listener-card">
+        <h3>Getting started</h3>
+        <ol>
+          <li>Apply with a government ID and a short photo verification.</li>
+          <li>Complete Contigo's listening guidelines module — about 20 minutes.</li>
+          <li>Set your own availability and the topics you are comfortable with.</li>
+          <li>Go live, get matched, talk, and earn per completed session.</li>
+        </ol>
+      </div>
+      <div class="listener-card">
+        <h3>What we expect</h3>
+        <ol>
+          <li>Show up as yourself — present, attentive, honest.</li>
+          <li>Keep every conversation platonic. Always.</li>
+          <li>Report anything that makes you uncomfortable — you are protected for doing so.</li>
+          <li>End any session that crosses a line. You are never obligated to continue.</li>
+        </ol>
+        <div class="not-allowed">
+          <strong>Never permitted:</strong> romantic or sexual conversation, requests to move off-platform, sharing personal contact information. Violations result in a permanent ban — for either party.
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:34px;">
+      <a href="apply.html" class="btn btn-coral">Apply as a listener</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Pricing</span>
+      <h2>Pay only for the session you book.</h2>
+      <p class="lede">No subscriptions. No auto-renewals. Book when you need it, stop when you don't.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <h3>Quick chat</h3>
+        <div class="amt">₹49 <span>/ 10 min</span></div>
+        <ul>
+          <li>Text-based conversation</li>
+          <li>Good for a quick check-in</li>
+          <li>Switch listener any time</li>
+        </ul>
+        <a href="book.html" class="btn btn-outline-dark" style="width:100%;justify-content:center;">Book this</a>
+      </div>
+      <div class="price-card featured">
+        <h3>Voice session</h3>
+        <div class="amt">₹149 <span>/ 20 min</span></div>
+        <ul>
+          <li>Real voice call</li>
+          <li>Most chosen by our users</li>
+          <li>Rebook the same listener</li>
+        </ul>
+        <a href="book.html" class="btn btn-coral" style="width:100%;justify-content:center;">Book this</a>
+      </div>
+      <div class="price-card">
+        <h3>Extended session</h3>
+        <div class="amt">₹349 <span>/ 50 min</span></div>
+        <ul>
+          <li>Voice or text, your choice</li>
+          <li>For longer conversations</li>
+          <li>Priority matching</li>
+        </ul>
+        <a href="book.html" class="btn btn-outline-dark" style="width:100%;justify-content:center;">Book this</a>
+      </div>
+    </div>
+    <p class="price-note">Listener earnings are paid directly to their UPI after each completed session.</p>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="section-light" id="faq">
+  <div class="wrap" style="max-width:780px;">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions people ask before they start.</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">Is this therapy or professional counselling? <span class="icon">+</span></button>
+      <div class="faq-a"><p>No. Contigo is peer-to-peer listening — not professional mental health treatment. Listeners are not licensed therapists or psychologists. If you are dealing with something serious, we encourage you to also speak with a qualified professional.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Is my identity kept private? <span class="icon">+</span></button>
+      <div class="faq-a"><p>You can talk under a display name. Listeners are ID-verified on the backend for safety purposes, but their identity is not shared with the person they speak with, and vice versa.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What happens if someone breaks the rules? <span class="icon">+</span></button>
+      <div class="faq-a"><p>Report it in one tap. A real person reviews every report — it does not go into an automated queue. Confirmed violations of the platonic-only policy result in an immediate, permanent ban.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I become a listener without prior experience? <span class="icon">+</span></button>
+      <div class="faq-a"><p>Yes. You will complete a short guidelines module before your first session. What matters most is that you are genuinely attentive and comfortable being present with someone who is going through something.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">How does payment work right now? <span class="icon">+</span></button>
+      <div class="faq-a"><p>Sessions are booked and confirmed via WhatsApp, with payment via UPI. Once your payment is confirmed, you are connected with your listener. Simple, direct, no friction.</p></div>
+    </div>
+
+    <div class="crisis-note">
+      <strong>If you are in crisis right now:</strong> Contigo is not equipped for emergencies. Please contact KIRAN, India's national mental health helpline, at <strong>1800-599-0019</strong> — free, available 24/7. Or speak directly with a licensed professional.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BOTTOM CTA ===================== -->
+<div class="cta-band">
+  <div class="wrap">
+    <h2>You don't have to carry it alone.</h2>
+    <p>There is someone on the other side of this who is ready to listen — not to fix, not to advise, just to be present.</p>
+    <div class="cta-band-btns">
+      <a href="listeners.html" class="btn btn-coral" style="font-size:1rem; padding:15px 32px;">Find a listener</a>
+      <a href="apply.html" class="btn btn-outline" style="font-size:1rem; padding:15px 32px;">Become a listener</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M2 14c2-4 4-4 6 0s4 4 6 0 4-4 6 0" stroke="#FF7A59" stroke-width="2" stroke-linecap="round"/></svg>
+          contigo
+        </a>
+        <p class="footer-tagline">A platonic space to be genuinely heard — by a real person, not a model.</p>
+      </div>
+      <div>
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="listeners.html">Find a listener</a></li>
+          <li><a href="book.html">Book a session</a></li>
+          <li><a href="apply.html">Become a listener</a></li>
+          <li><a href="#safety">Safety</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul>
+          <li>contigo.hello@gmail.com</li>
+          <li>WhatsApp: +91 62681 46820</li>
+          <li>Team Contigo</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Contigo. All conversations are strictly platonic by policy.</span>
+      <span>Community Guidelines · Privacy · Terms</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  document.getElementById('bannerClose').addEventListener('click', function(){
+    document.getElementById('safetyBanner').style.display = 'none';
+  });
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    item.querySelector('.faq-q').addEventListener('click', function(){
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+</script>
+
+</body>
+</html>
