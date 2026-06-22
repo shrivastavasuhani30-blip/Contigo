@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find a Listener — Contigo</title>
+<meta name="description" content="Browse real, verified human listeners on Contigo. Pick who you want to talk to, book a session, and start talking today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --abyss:      #0A1F3D;
+    --abyss-deep: #061425;
+    --foam:       #F6F7F3;
+    --paper:      #FFFFFF;
+    --tide:       #1F6F78;
+    --coral:      #FF7A59;
+    --coral-soft: #FFD9CC;
+    --mist:       #8C97A6;
+    --ink:        #121722;
+    --line:       rgba(255,255,255,0.12);
+    --line-dark:  rgba(10,31,61,0.10);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body:    'Plus Jakarta Sans', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+    --max-w: 1140px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:var(--font-body); color:var(--ink); background:var(--paper); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  button{ font-family:inherit; cursor:pointer; }
+  .wrap{ max-width:var(--max-w); margin:0 auto; padding:0 24px; }
+  h1,h2,h3{ font-family:var(--font-display); font-weight:500; line-height:1.08; }
+  .eyebrow{ font-family:var(--font-mono); font-size:12.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--coral); display:flex; align-items:center; gap:8px; }
+  .eyebrow::before{ content:""; width:16px; height:1px; background:var(--coral); display:inline-block; }
+  :focus-visible{ outline:2px solid var(--coral); outline-offset:3px; border-radius:4px; }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 24px; border-radius:999px; font-weight:600; font-size:0.93rem; border:1px solid transparent; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; white-space:nowrap; }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-coral{ background:var(--coral); color:var(--abyss-deep); }
+  .btn-coral:hover{ box-shadow:0 10px 24px -8px rgba(255,122,89,0.55); }
+  .btn-outline-dark{ background:transparent; color:var(--abyss); border-color:var(--line-dark); }
+  .btn-outline{ background:transparent; color:var(--paper); border-color:var(--line); }
+  .btn-outline:hover{ background:rgba(255,255,255,0.06); }
+  .btn-ghost{ background:rgba(10,31,61,0.04); color:var(--abyss); border:1px solid var(--line-dark); }
+  .btn-ghost:hover{ background:rgba(10,31,61,0.08); }
+
+  /* safety banner */
+  #safetyBanner{ background:var(--abyss-deep); color:var(--foam); font-size:0.85rem; padding:10px 24px; display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; text-align:center; position:relative; z-index:60; }
+  #safetyBanner strong{ color:var(--coral); }
+  #safetyBanner button{ background:none; border:1px solid var(--line); color:var(--mist); border-radius:999px; padding:4px 12px; font-size:0.78rem; }
+
+  /* nav */
+  header.nav{ background:var(--abyss-deep); position:sticky; top:0; z-index:50; border-bottom:1px solid var(--line); }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:var(--max-w); margin:0 auto; }
+  .logo{ display:flex; align-items:center; gap:8px; font-family:var(--font-display); font-style:italic; font-weight:500; font-size:1.4rem; color:var(--paper); }
+  .nav-links{ display:flex; align-items:center; gap:28px; }
+  .nav-links a{ color:var(--mist); font-size:0.92rem; font-weight:500; }
+  .nav-links a:hover, .nav-links a.active{ color:var(--paper); }
+  .nav-cta{ display:flex; align-items:center; gap:12px; }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--paper); }
+  @media(max-width:880px){
+    .nav-links{ position:absolute; top:100%; left:0; right:0; background:var(--abyss-deep); flex-direction:column; align-items:flex-start; gap:0; border-bottom:1px solid var(--line); max-height:0; overflow:hidden; transition:max-height .25s ease; }
+    .nav-links.open{ max-height:320px; }
+    .nav-links a{ padding:14px 24px; width:100%; border-top:1px solid var(--line); }
+    .nav-toggle{ display:block; }
+    .nav-cta .btn-outline{ display:none; }
+  }
+
+  /* page hero */
+  .page-hero{ background:radial-gradient(120% 80% at 60% 0%, #102a4d 0%, var(--abyss) 50%, var(--abyss-deep) 100%); color:var(--paper); padding:60px 0 48px; }
+  .page-hero h1{ font-size:clamp(2rem,3.5vw,2.8rem); margin:14px 0 12px; }
+  .page-hero p{ color:rgba(246,247,243,0.7); max-width:52ch; font-size:1rem; }
+
+  /* filter bar */
+  .filter-bar{ background:var(--foam); border-bottom:1px solid var(--line-dark); padding:16px 0; position:sticky; top:64px; z-index:40; }
+  .filter-inner{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; max-width:var(--max-w); margin:0 auto; padding:0 24px; }
+  .filter-label{ font-family:var(--font-mono); font-size:0.75rem; color:var(--mist); text-transform:uppercase; letter-spacing:0.08em; margin-right:4px; }
+  .filter-btn{ padding:7px 16px; border-radius:999px; font-size:0.82rem; font-weight:600; border:1px solid var(--line-dark); background:var(--paper); color:var(--mist); cursor:pointer; transition:all .15s ease; }
+  .filter-btn:hover{ border-color:var(--abyss); color:var(--abyss); }
+  .filter-btn.active{ background:var(--abyss); color:var(--paper); border-color:var(--abyss); }
+  .status-dot{ width:7px; height:7px; border-radius:50%; background:#2ECC71; display:inline-block; }
+
+  /* available now strip */
+  .available-strip{ background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.25); border-radius:10px; padding:10px 16px; display:flex; align-items:center; gap:10px; font-size:0.85rem; color:#1a7a43; margin-bottom:28px; }
+
+  /* grid */
+  .listeners-grid{ padding:48px 0 80px; }
+  .listener-grid-inner{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  @media(max-width:960px){ .listener-grid-inner{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:600px){ .listener-grid-inner{ grid-template-columns:1fr; } }
+
+  /* listener card */
+  .lcard{
+    background:var(--paper); border:1px solid var(--line-dark); border-radius:20px;
+    overflow:hidden; transition:transform .2s ease, box-shadow .2s ease;
+    display:flex; flex-direction:column;
+  }
+  .lcard:hover{ transform:translateY(-4px); box-shadow:0 20px 48px -16px rgba(10,31,61,0.18); }
+  .lcard-top{ padding:24px 24px 0; display:flex; gap:14px; align-items:flex-start; }
+  .lcard-avatar{
+    width:58px; height:58px; border-radius:50%; flex-shrink:0;
+    background:linear-gradient(135deg, var(--abyss) 0%, var(--tide) 100%);
+    border:2.5px solid var(--coral);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-style:italic; font-size:1.3rem; color:var(--coral-soft);
+    position:relative;
+  }
+  .online-dot{ position:absolute; bottom:2px; right:2px; width:10px; height:10px; border-radius:50%; background:#2ECC71; border:2px solid var(--paper); }
+  .lcard-info{ flex:1; }
+  .lcard-name{ font-weight:700; font-size:1rem; margin-bottom:3px; }
+  .lcard-verified{ display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; color:#B8421E; background:var(--coral-soft); padding:2px 9px; border-radius:999px; font-weight:600; }
+  .lcard-rating{ font-family:var(--font-mono); font-size:0.78rem; color:var(--mist); margin-top:5px; }
+  .lcard-rating strong{ color:var(--ink); }
+  .lcard-body{ padding:16px 24px; flex:1; }
+  .lcard-bio{ font-size:0.88rem; color:var(--mist); line-height:1.55; margin-bottom:14px; }
+  .lcard-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .tag{ font-size:0.74rem; font-weight:600; padding:4px 10px; border-radius:999px; background:rgba(10,31,61,0.06); color:var(--abyss); }
+  .lcard-meta{ display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line-dark); padding:14px 24px; }
+  .lcard-price{ font-family:var(--font-display); font-size:1.05rem; color:var(--abyss); }
+  .lcard-price span{ font-family:var(--font-body); font-size:0.78rem; color:var(--mist); font-weight:500; }
+  .lcard-cta{ padding:14px 24px 20px; }
+  .lcard-cta .btn{ width:100%; }
+
+  /* offline card */
+  .lcard.offline{ opacity:0.55; }
+  .lcard.offline .online-dot{ background:var(--mist); }
+
+  /* empty state */
+  .empty{ text-align:center; padding:64px 24px; color:var(--mist); }
+  .empty h3{ font-family:var(--font-body); font-weight:600; margin-bottom:8px; color:var(--abyss); }
+
+  /* bottom cta */
+  .bottom-cta{ background:var(--abyss-deep); color:var(--paper); padding:72px 0; text-align:center; }
+  .bottom-cta h2{ font-size:clamp(1.6rem,2.8vw,2.2rem); margin-bottom:14px; }
+  .bottom-cta p{ color:var(--mist); max-width:44ch; margin:0 auto 28px; }
+
+  footer{ background:var(--abyss-deep); color:var(--mist); padding:40px 0 24px; font-size:0.85rem; border-top:1px solid var(--line); }
+  .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:0.78rem; }
+  .footer-bottom a:hover{ color:var(--paper); }
+</style>
+</head>
+<body>
+
+<div id="safetyBanner">
+  <span><strong>All conversations on Contigo are strictly platonic.</strong> Verified listeners. One-tap reporting. 18+ only.</span>
+  <button id="bannerClose">Got it</button>
+</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 14c2-4 4-4 6 0s4 4 6 0 4-4 6 0" stroke="#FF7A59" stroke-width="2" stroke-linecap="round"/></svg>
+      contigo
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="listeners.html" class="active">Find a listener</a>
+      <a href="index.html#safety">Safety</a>
+      <a href="apply.html">Become a listener</a>
+      <a href="index.html#pricing">Pricing</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="apply.html" class="btn btn-outline">Earn as a listener</a>
+      <a href="book.html" class="btn btn-coral">Book a session</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Browse listeners</span>
+    <h1>Pick who you want to talk to.</h1>
+    <p>Every listener below is ID-verified by us. Browse by topic, check availability, and book a session — it takes under a minute.</p>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-inner">
+    <span class="filter-label">Filter by</span>
+    <button class="filter-btn active" data-filter="all">All <span class="status-dot" style="margin-left:4px"></span> Available</button>
+    <button class="filter-btn" data-filter="vent">Just need to vent</button>
+    <button class="filter-btn" data-filter="work">Work & stress</button>
+    <button class="filter-btn" data-filter="family">Family & relationships</button>
+    <button class="filter-btn" data-filter="loneliness">Loneliness</button>
+    <button class="filter-btn" data-filter="motivation">Life & motivation</button>
+  </div>
+</div>
+
+<section class="listeners-grid">
+  <div class="wrap">
+    <div class="available-strip">
+      <span class="status-dot"></span>
+      <span><strong id="onlineCount">6</strong> listeners available right now — sessions start within 5 minutes of booking.</span>
+    </div>
+
+    <!-- ============================================================
+         LISTENER CARDS — add, remove, or edit listeners here.
+         Each .lcard needs: data-topics (space-separated filter keys)
+         class "offline" for unavailable listeners.
+         ============================================================ -->
+    <div class="listener-grid-inner" id="listenerGrid">
+
+      <!-- Listener 1 -->
+      <div class="lcard" data-topics="vent loneliness motivation">
+        <div class="lcard-top">
+          <div class="lcard-avatar">A <div class="online-dot"></div></div>
+          <div class="lcard-info">
+            <div class="lcard-name">Aanya R.</div>
+            <div class="lcard-verified">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF7A59"/><path d="M8 12l3 3 5-6" stroke="#0A1F3D" stroke-width="2.5" stroke-linecap="round"/></svg>
+              ID Verified
+            </div>
+            <div class="lcard-rating">⭐ <strong>4.9</strong> · 142 sessions</div>
+          </div>
+        </div>
+        <div class="lcard-body">
+          <p class="lcard-bio">I've always been the friend people call at 2am. I don't judge, I don't rush you — I just listen. If you need to get something off your chest, I'm here.</p>
+          <div class="lcard-tags">
+            <span class="tag">Just need to vent</span>
+            <span class="tag">Loneliness</span>
+            <span class="tag">Motivation</span>
+          </div>
+        </div>
+        <div class="lcard-meta">
+          <div class="lcard-price">₹149 <span>/ 20 min session</span></div>
+          <span style="font-size:0.78rem; color:#2ECC71; font-weight:600;">● Online now</span>
+        </div>
+        <div class="lcard-cta">
+          <a href="book.html?listener=Aanya" class="btn btn-coral">Book with Aanya</a>
+        </div>
+      </div>
+
+      <!-- Listener 2 -->
+      <div class="lcard" data-topics="work stress motivation family">
+        <div class="lcard-top">
+          <div class="lcard-avatar" style="background:linear-gradient(135deg,#1a4a5a,#0d6b6b)">R <div class="online-dot"></div></div>
+          <div class="lcard-info">
+            <div class="lcard-name">Rohan M.</div>
+            <div class="lcard-verified">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF7A59"/><path d="M8 12l3 3 5-6" stroke="#0A1F3D" stroke-width="2.5" stroke-linecap="round"/></svg>
+              ID Verified
+            </div>
+            <div class="lcard-rating">⭐ <strong>4.8</strong> · 89 sessions</div>
+          </div>
+        </div>
+        <div class="lcard-body">
+          <p class="lcard-bio">I spent 6 years in corporate before I realised people just needed someone to actually listen. No advice unless you want it. Happy to hear about work, family, or life in general.</p>
+          <div class="lcard-tags">
+            <span class="tag">Work & stress</span>
+            <span class="tag">Family</span>
+            <span class="tag">Motivation</span>
+          </div>
+        </div>
+        <div class="lcard-meta">
+          <div class="lcard-price">₹149 <span>/ 20 min session</span></div>
+          <span style="font-size:0.78rem; color:#2ECC71; font-weight:600;">● Online now</span>
+        </div>
+        <div class="lcard-cta">
+          <a href="book.html?listener=Rohan" class="btn btn-coral">Book with Rohan</a>
+        </div>
+      </div>
+
+      <!-- Listener 3 -->
+      <div class="lcard" data-topics="loneliness vent family">
+        <div class="lcard-top">
+          <div class="lcard-avatar" style="background:linear-gradient(135deg,#2a1f4d,#3d2080)">P <div class="online-dot"></div></div>
+          <div class="lcard-info">
+            <div class="lcard-name">Priya S.</div>
+            <div class="lcard-verified">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF7A59"/><path d="M8 12l3 3 5-6" stroke="#0A1F3D" stroke-width="2.5" stroke-linecap="round"/></svg>
+              ID Verified
+            </div>
+            <div class="lcard-rating">⭐ <strong>5.0</strong> · 203 sessions</div>
+          </div>
+        </div>
+        <div class="lcard-body">
+          <p class="lcard-bio">Talking to strangers is something I've always found easier than talking to people I know. I bring that same openness to every conversation. Nothing you say will surprise or shock me.</p>
+          <div class="lcard-tags">
+            <span class="tag">Loneliness</span>
+            <span class="tag">Just need to vent</span>
+            <span class="tag">Family</span>
+          </div>
+        </div>
+        <div class="lcard-meta">
+          <div class="lcard-price">₹149 <span>/ 20 min session</span></div>
+          <span style="font-size:0.78rem; color:#2ECC71; font-weight:600;">● Online now</span>
+        </div>
+        <div class="lcard-cta">
+          <a href="book.html?listener=Priya" class="btn btn-coral">Book with Priya</a>
+        </div>
+      </div>
+
+      <!-- Listener 4 -->
+      <div class="lcard" data-topics="motivation work vent">
+        <div class="lcard-top">
+          <div class="lcard-avatar" style="background:linear-gradient(135deg,#1f3d2a,#1a7a43)">K <div class="online-dot"></div></div>
+          <div class="lcard-info">
+            <div class="lcard-name">Kabir T.</div>
+            <div class="lcard-verified">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF7A59"/><path d="M8 12l3 3 5-6" stroke="#0A1F3D" stroke-width="2.5" stroke-linecap="round"/></svg>
+              ID Verified
+            </div>
+            <div class="lcard-rating">⭐ <strong>4.7</strong> · 61 sessions</div>
+          </div>
+        </div>
+        <div class="lcard-body">
+          <p class="lcard-bio">I'm a decent listener with zero agenda. If you want to think something through out loud, figure out what you actually want, or just need someone present — let's talk.</p>
+          <div class="lcard-tags">
+            <span class="tag">Motivation</span>
+            <span class="tag">Work & stress</span>
+            <span class="tag">Just need to vent</span>
+          </div>
+        </div>
+        <div class="lcard-meta">
+          <div class="lcard-price">₹149 <span>/ 20 min session</span></div>
+          <span style="font-size:0.78rem; color:#2ECC71; font-weight:600;">● Online now</span>
+        </div>
+        <div class="lcard-cta">
+          <a href="book.html?listener=Kabir" class="btn btn-coral">Book with Kabir</a>
+        </div>
+      </div>
+
+      <!-- Listener 5 — offline -->
+      <div class="lcard offline" data-topics="family loneliness">
+        <div class="lcard-top">
+          <div class="lcard-avatar" style="background:linear-gradient(135deg,#3d1f1f,#6b2020)">N <div class="online-dot" style="background:var(--mist)"></div></div>
+          <div class="lcard-info">
+            <div class="lcard-name">Nisha K.</div>
+            <div class="lcard-verified">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF7A59"/><path d="M8 12l3 3 5-6" stroke="#0A1F3D" stroke-width="2.5" stroke-linecap="round"/></svg>
+              ID Verified
+            </div>
+            <div class="lcard-rating">⭐ <strong>4.9</strong> · 317 sessions</div>
+          </div>
+        </div>
+        <div class="lcard-body">
+          <p class="lcard-bio">I've been there. Family complications, feeling unseen, not knowing who to talk to. I don't offer solutions — I offer a space where you don't have to be okay.</p>
+          <div class="lcard-tags">
+            <span class="tag">Family</span>
+            <span class="tag">Loneliness</span>
+          </div>
+        </div>
+        <div class="lcard-meta">
+          <div class="lcard-price">₹149 <span>/ 20 min session</span></div>
+          <span style="font-size:0.78rem; color:var(--mist); font-weight:600;">● Away — back in ~2h</span>
+        </div>
+        <div class="lcard-cta">
+          <a href="book.html?listener=Nisha" class="btn btn-ghost">Notify when online</a>
+        </div>
+      </div>
+
+      <!-- Listener 6 -->
+      <div class="lcard" data-topics="vent work motivation loneliness">
+        <div class="lcard-top">
+          <div class="lcard-avatar" style="background:linear-gradient(135deg,#1a3d4d,#0d5580)">S <div class="online-dot"></div></div>
+          <div class="lcard-info">
+            <div class="lcard-name">Samar V.</div>
+            <div class="lcard-verified">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF7A59"/><path d="M8 12l3 3 5-6" stroke="#0A1F3D" stroke-width="2.5" stroke-linecap="round"/></svg>
+              ID Verified
+            </div>
+            <div class="lcard-rating">⭐ <strong>4.8</strong> · 114 sessions</div>
+          </div>
+        </div>
+        <div class="lcard-body">
+          <p class="lcard-bio">I ask good questions and I actually wait for the answers. That's the whole thing, honestly. Whether it's career, life, or just feeling stuck — I'm a good ear.</p>
+          <div class="lcard-tags">
+            <span class="tag">Just need to vent</span>
+            <span class="tag">Work & stress</span>
+            <span class="tag">Motivation</span>
+          </div>
+        </div>
+        <div class="lcard-meta">
+          <div class="lcard-price">₹149 <span>/ 20 min session</span></div>
+          <span style="font-size:0.78rem; color:#2ECC71; font-weight:600;">● Online now</span>
+        </div>
+        <div class="lcard-cta">
+          <a href="book.html?listener=Samar" class="btn btn-coral">Book with Samar</a>
+        </div>
+      </div>
+
+    </div><!-- /listener-grid-inner -->
+  </div>
+</section>
+
+<div class="bottom-cta">
+  <div class="wrap">
+    <h2>Not sure who to pick?</h2>
+    <p>Tell us what you want to talk about and we'll match you with whoever's free right now.</p>
+    <a href="book.html" class="btn btn-coral" style="font-size:1rem; padding:15px 30px;">Let us match you</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© 2026 Contigo · All conversations are strictly platonic.</span>
+      <span><a href="index.html">Home</a> · <a href="apply.html">Become a listener</a> · <a href="index.html#safety">Safety</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('bannerClose').addEventListener('click',function(){ document.getElementById('safetyBanner').style.display='none'; });
+  document.getElementById('navToggle').addEventListener('click',function(){ document.getElementById('navLinks').classList.toggle('open'); });
+
+  // Filter logic
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filterBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var filter = btn.dataset.filter;
+      var cards = document.querySelectorAll('.lcard');
+      var count = 0;
+      cards.forEach(function(card){
+        var topics = card.dataset.topics || '';
+        var online = !card.classList.contains('offline');
+        if(filter === 'all'){
+          card.style.display = '';
+          if(online) count++;
+        } else {
+          if(topics.includes(filter)){
+            card.style.display = '';
+            if(online) count++;
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+      document.getElementById('onlineCount').textContent = count;
+    });
+  });
+</script>
+</body>
+</html>
