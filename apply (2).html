@@ -11,7 +11,7 @@
 <style>
   :root{
     --abyss:#0A1F3D; --abyss-deep:#061425; --foam:#F6F7F3; --paper:#FFFFFF;
-    --tide:#1F6F78; --coral:#FF7A59; --coral-soft:#FFD9CC; --mist:#8C97A6; --ink:#121722;
+    --tide:#1F6F78; --coral:#C9A84C; --coral-soft:#F0DFB8; --mist:#8C97A6; --ink:#121722;
     --line:rgba(255,255,255,0.12); --line-dark:rgba(10,31,61,0.10);
     --font-display:'Fraunces',Georgia,serif; --font-body:'Plus Jakarta Sans',sans-serif; --font-mono:'JetBrains Mono',monospace;
     --max-w:1140px;
@@ -29,7 +29,7 @@
   .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 24px; border-radius:999px; font-weight:600; font-size:0.93rem; border:1px solid transparent; transition:transform .15s, box-shadow .15s, background .15s; white-space:nowrap; }
   .btn:hover{ transform:translateY(-1px); }
   .btn-coral{ background:var(--coral); color:var(--abyss-deep); }
-  .btn-coral:hover{ box-shadow:0 10px 24px -8px rgba(255,122,89,0.55); }
+  .btn-coral:hover{ box-shadow:0 10px 24px -8px rgba(201,168,76,0.55); }
   .btn-outline{ background:transparent; color:var(--paper); border-color:var(--line); }
 
   #safetyBanner{ background:var(--abyss-deep); color:var(--foam); font-size:0.85rem; padding:10px 24px; display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; text-align:center; z-index:60; position:relative; }
@@ -75,9 +75,9 @@
   .sidebar-card ul{ display:flex; flex-direction:column; gap:11px; }
   .sidebar-card ul li{ font-size:0.88rem; color:var(--mist); padding-left:20px; position:relative; }
   .sidebar-card ul li::before{ content:"✓"; position:absolute; left:0; color:var(--coral); font-weight:700; }
-  .not-allowed-box{ background:rgba(255,122,89,0.07); border:1px solid rgba(255,122,89,0.25); border-radius:14px; padding:18px; }
-  .not-allowed-box h4{ font-size:0.85rem; font-weight:700; color:#B8421E; margin-bottom:10px; }
-  .not-allowed-box ul li::before{ content:"✗"; color:#B8421E; }
+  .not-allowed-box{ background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.25); border-radius:14px; padding:18px; }
+  .not-allowed-box h4{ font-size:0.85rem; font-weight:700; color:#8B6914; margin-bottom:10px; }
+  .not-allowed-box ul li::before{ content:"✗"; color:#8B6914; }
 
   /* form */
   .apply-form{ background:var(--paper); border:1px solid var(--line-dark); border-radius:20px; padding:36px; }
@@ -108,12 +108,12 @@
   .radio-pill{ padding:7px 16px; border-radius:999px; border:1.5px solid var(--line-dark); font-size:0.82rem; font-weight:600; cursor:pointer; transition:all .15s; color:var(--mist); }
   .radio-pill.selected{ background:var(--abyss); color:var(--paper); border-color:var(--abyss); }
 
-  .consent-box{ background:rgba(255,122,89,0.06); border:1.5px solid rgba(255,122,89,0.2); border-radius:12px; padding:16px; }
+  .consent-box{ background:rgba(201,168,76,0.06); border:1.5px solid rgba(201,168,76,0.2); border-radius:12px; padding:16px; }
   .consent-box label{ display:flex; gap:12px; cursor:pointer; font-size:0.85rem; color:var(--ink); line-height:1.5; }
   .consent-box input[type=checkbox]{ width:16px; height:16px; accent-color:var(--coral); flex-shrink:0; margin-top:2px; }
 
   .submit-btn{ width:100%; padding:15px; border-radius:999px; background:var(--coral); color:var(--abyss-deep); font-weight:700; font-size:1rem; border:none; cursor:pointer; transition:transform .15s, box-shadow .15s; margin-top:8px; }
-  .submit-btn:hover{ transform:translateY(-1px); box-shadow:0 10px 24px -8px rgba(255,122,89,0.55); }
+  .submit-btn:hover{ transform:translateY(-1px); box-shadow:0 10px 24px -8px rgba(201,168,76,0.55); }
   .submit-note{ font-size:0.78rem; color:var(--mist); text-align:center; margin-top:10px; }
 
   /* success state */
@@ -137,7 +137,7 @@
 <header class="nav">
   <div class="nav-inner">
     <a href="index.html" class="logo">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 14c2-4 4-4 6 0s4 4 6 0 4-4 6 0" stroke="#FF7A59" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 14c2-4 4-4 6 0s4 4 6 0 4-4 6 0" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/></svg>
       contigo
     </a>
     <nav class="nav-links" id="navLinks">
